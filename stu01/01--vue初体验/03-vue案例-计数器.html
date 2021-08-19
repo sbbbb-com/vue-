@@ -17,11 +17,17 @@
 </div>
 
 <script>
+
+    //proxy
+    const obj={
+        counter: 0,
+        message:　'abc'
+    }
+
     const  app=new Vue({
-        el: '#app',
-        data: {
-            counter: 0  //定义变量
-        },
+         el: '#app',
+        //el: document.querySelector(),
+        data: obj,
         //定义方法
         methods: {
             //定义一个函数 加一个
@@ -38,6 +44,15 @@
 
             }
 
+        },
+        beforeCrete: function () {
+
+        },
+        created: function () {
+            console.log("created")
+        },
+        mounted: function () {
+            console.log("mounted")
         }
     })
 
