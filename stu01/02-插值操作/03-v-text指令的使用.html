@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>v-text指令</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <h2>{{message}},火狐</h2>
+<!--
+v-text
+预期：string
+  详细：
+  更新元素的 textContent。
+  如果要更新部分的 textContent，需要使用 {{ Mustache }} 插值。
+  -->
+  <h3 v-text="message">火狐</h3>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！'
+    }
+  })
+</script>
+</body>
+</html>
