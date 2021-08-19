@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>v-bind动态绑定class（数组语法）</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <h2 :class="[active,line]">{{message}}</h2>
+  <h2 :class="getClasses()">{{message}}</h2>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      active: 'aa',
+      line: 'bb'
+    },
+    methods: {
+      getClasses: function () {
+        return [this.line,this.active]
+      }
+    }
+  })
+</script>
+</body>
+</html>
