@@ -8,6 +8,9 @@
 
 <div id="app">
   {{message}}
+  使用方法
+  <h2>总价格：{{getTotalPrice()}}</h2>
+  使用计算属性
   <h2>总价格：{{totalPrice}}</h2>
   <button v-on:click="test()">1</button>
 </div>
@@ -39,6 +42,16 @@
       }
     },
     methods:  {
+      //计算总价格
+      getTotalPrice: function () {
+        // for 循环 计算总价格
+        let  result=0;
+        for (let i = 0; i < this.books.length; i++) {
+          result+=this.books[i].price;
+        }
+        return result;
+      },
+
       //es6 语法
       test: function () {
         for (let index in this.books) {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性和methods</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <hr />
+  1.直接拼接： 语法过于繁琐
+  <h2>{{firstName}} {{lastName}}</h2>
+  2.通过定义methods
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  3.通过computed
+  <h2>{{FullName}}</h2>
+  <h2>{{FullName}}</h2>
+  <h2>{{FullName}}</h2>
+  <h2>{{FullName}}</h2>
+  <h2>{{FullName}}</h2>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      firstName: 'Kobe',
+      lastName: 'Bryant'
+    },
+    //执行需要调用多次  使用一次调用一次  性能较低
+    methods: {
+      getFullName: function () {
+        console.log("调用一次getFullName=》methods")
+        return this.firstName+' '+this.lastName;
+      }
+    },
+    //执行需要执行一次 若调用元素没有发生变化的话 性能较高
+    computed: {
+      FullName: function () {
+        console.log("调用一次FullName=》computed")
+        return this.firstName+' '+this.lastName;
+      }
+    }
+  })
+</script>
+
+</body>
+</html>
