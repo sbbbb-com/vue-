@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>v-bind动态绑定style 数组语法</title>
+  <style>
+    .title{
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"  :style="[baseStyle,baseStyle1]">
+  {{message}}
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      baseStyle: {backgroundColor: 'red'},
+      baseStyle1: {fontSize: '100px'},
+    }
+  })
+</script>
+
+</body>
+</html>
