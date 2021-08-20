@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>01-块级作用域</title>
+</head>
+<body>
+
+<button>按钮1</button>
+<button>按钮2</button>
+<button>按钮3</button>
+<button>按钮4</button>
+<button>按钮5</button>
+
+<script>
+
+  //1.for的块级引起的问题
+  var btns=document.getElementsByTagName('button');
+  for (var i = 0; i <btns.length; i++) {
+    btns[i].addEventListener('click',function () {
+      console.log('第' + i + '个按钮 被点击');
+    })
+  }
+  //情况一 没有使用闭包
+
+  //传统解决办法
+  //为什么闭包可以解决问题？？ 因为函数是一个作用域！
+  var btns=document.getElementsByTagName('button');
+  for (var i = 0; i < btns.length; i++) {
+    //闭包
+    (function (index) {
+      btns[i].addEventListener('click',function () {
+        console.log('第' + index + '个按钮 被点击');
+      })
+    })/*调用闭包*/(i)
+  }
+
+  //使用es6 let
+  const btns=document.getElementsByTagName('button');
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].addEventListener('click',function () {
+      console.log('第' + i + '个按钮 被点击');
+    })
+  }
+
+</script>
+
+</body>
+</html>

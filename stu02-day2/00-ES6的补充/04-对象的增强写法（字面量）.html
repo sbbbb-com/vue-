@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>对象字面量增强写法</title>
+</head>
+<body>
+
+<script>
+
+  // angular -》 Google
+  // TypeScript（Microsoft）-> ts(类型检测）
+  // flow（facebook）-》
+  //const obj=new Object();
+
+  const  obj={
+    /*对象的字面量*/
+    name: 'what',
+    age: 48,
+    run: function () {
+      console.log("愉快的玩耍！")
+    },
+    eat: function () {
+      console.log("淦饭啊！")
+    }
+  }
+
+  //1.属性的增强写法
+  const  name='when';
+  const  age=60;
+  const  height=1.9;
+  //原始方法
+/*  const  obj2={
+    name: name,
+    age: age,
+    height: height
+  }
+  console.log(obj2);*/
+
+  //ES6的属性的增强写法
+  const obj3={
+    /*内部会自动的将变量的名称 作为key，
+    变量具体的值 作为values保存进对象中*/
+    name,age,height
+  };
+  console.log(obj3)
+
+  //ES6 的函数的增强写法
+  //原始的es5的写法
+  const obj4={
+    eat: function () {
+      console.log("吃饭")
+    },
+    run: function () {
+      console.log("出去运动")
+    }
+  }
+
+  //ES6的函数的语法
+  const obj5={
+    eat(){
+      console.log("es6 的函数写法！！")
+    },
+    run(){
+      console.log("es6的函数的写法！！")
+    }
+  }
+
+</script>
+</body>
+</html>
