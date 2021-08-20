@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>v-bind动态绑定style 对象语法</title>
+  <style>
+    .title{
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <!--<h2 :style="{key【css属性名】：key【属性值】}">{{message}}</h2>-->
+  <h2 v-bind:style="{fontSize/*前面属性不需要加，会当成key直接使用*/: '50px'/*在里面的50px必须要加单引号变成文本 否则会被解析为变量*/}">
+    {{message}}</h2>
+
+  <!--*************分割线*************-->
+  <h2 :style="{fontSize: finalSize+'px' ,backgroundColor:finalColor/*引用下面变量的形式*/}">{{message+'2'}}</h2>
+
+  <!--*************抽离属性为函数 返回 *************-->
+  <h2 :style="getStyles()">{{message+'3'}}</h2>
+
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      finalSize: 50,
+      finalColor: 'red'
+    },
+    methods: {
+      getStyles: function () {
+        return {fontSize: this.finalSize+'px' ,backgroundColor:this.finalColor};
+      }
+    }
+  })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02-计算属性的复杂操作</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <h2>总价格：{{totalPrice}}</h2>
+  <button v-on:click="test()">1</button>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      books: [
+        {id: 110,name: 'Unix编程入门',price: 150},
+        {id: 111,name: '代码大全',price: 151},
+        {id: 112,name: '深入理解计算机原理',price: 59},
+        {id: 113,name: '现代操作系统',price: 97}
+      ]
+    },
+    computed: {
+      //计算总价格属性
+      totalPrice: function () {
+
+        // for 循环 计算总价格
+        let  result=0;
+        for (let i = 0; i < this.books.length; i++) {
+          result+=this.books[i].price;
+        }
+        return result;
+      }
+    },
+    methods:  {
+      //es6 语法
+      test: function () {
+        for (let index in this.books) {
+          console.log(this.books[index].name);
+        }
+
+        for (let book of this.books) {
+          console.log(book.name);
+        }
+      }
+    }
+
+  })
+</script>q
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性的基本使用</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <h2>{{firstName+' '+lastName}}</h2>
+  <h2>{{firstName}} {{lastName}}</h2>
+
+  <h2>{{getFullName()}}</h2>
+
+  计算属性: 不需要加小括号
+  <h2>{{fullName}}</h2>
+
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      firstName: 'Jon',
+      lastName: 'Test'
+    },
+    //计算属性
+    computed: {
+      //一般不加动词 get之类的  上面使用 直接使用 不需要加小括号
+      fullName: function () {
+        return this.firstName+' '+this.lastName;
+      }
+    },
+    // 定义函数
+    methods: {
+      getFullName: function () {
+        return this.firstName+' '+this.lastName;
+      }
+    }
+  })
+</script>
+</body>
+</html>

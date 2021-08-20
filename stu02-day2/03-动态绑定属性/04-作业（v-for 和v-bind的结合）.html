@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>作业</title>
+  <style>
+    .mColor{
+      color: #ff1d30;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  {{message}}
+  <hr />
+  <ul>
+    <li v-for="(name,index) in movies"
+        v-bind:key="index"
+        :class="{mColor:currentIndex===index}" v-on:click="checkColor(index)">
+      {{index+' '+name}}</li>
+  </ul>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      currentIndex: 0,
+      message: '主要目标,使用v-for 以及 v-bind 当我们点击某一行,某一行变颜色,其他不变',
+      movies: ['盗梦空间','极乐世界','极盗者','红辣椒']
+    },
+    methods: {
+
+      checkColor: function (index) {
+        this.currentIndex=index
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计数器</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>当前计数：{{counter}}</h2>
+    <!--<button v-on:click="counter++">+</button>
+    <button v-on:click="counter&#45;&#45;">-</button>-->
+    <button v-on:click="add">+</button>
+   <!-- <button v-on:click="sub">-</button>-->
+   <!-- 语法糖 简写-->
+    <button @click="sub">-</button>
+</div>
+
+<script>
+
+    //proxy
+    const obj={
+        counter: 0,
+        message:　'abc'
+    }
+
+    const  app=new Vue({
+         el: '#app',
+        //el: document.querySelector(),
+        data: obj,
+        //定义方法
+        methods: {
+            //定义一个函数 加一个
+            add: function () {
+                // 直接写counter找不到  一般写this.xx 会找当前对象下的xx，再进行运算
+                this.counter++
+                console.log("加法模块被执行！")
+
+            },
+            //定义一个函数 减一个
+            sub: function () {
+                this.counter--;
+                console.log("减法模块被执行！")
+
+            }
+
+        },
+        beforeCrete: function () {
+
+        },
+        created: function () {
+            console.log("created")
+        },
+        mounted: function () {
+            console.log("mounted")
+        }
+    })
+
+    //1.传统方法 拿button
+    //2.添加监听事件 更改
+</script>
+</body>
+</html>
