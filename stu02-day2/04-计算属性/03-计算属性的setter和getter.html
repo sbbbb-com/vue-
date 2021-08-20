@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性的setter和getter</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <h2>{{fullName}}</h2>
+  <h2>{{fullName2}}</h2>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      firstName: 'Kobe',
+      lastName: 'Bey'
+    },
+    //计算属性
+    computed:{
+
+      /*fullName: function () {
+        return this.firstName+' '+this.lastName;
+      }*/
+      //计算属性一般是没有set方法 只读属性
+      fullName: {
+        /* 一般不写set值*/
+        set: function (newValue) {
+          console.log("调用set 获取参数为："+newValue)
+          const names=newValue.split(' ');
+          const  f_name=names[0];
+          const  l_name=names[1];
+          console.log('名称前面'+f_name);
+          console.log('名称后面'+l_name);
+          this.firstName=f_name;
+          this.lastName=l_name;
+        },
+        get: function () {
+          return this.firstName+' '+this.lastName
+        }
+      },
+     // * 所以一般省略set 写成一下形式
+      fullName2: function () {
+        return this.firstName+' '+this.lastName
+      }
+    }
+  })
+</script>
+</body>
+</html>
