@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>v-if和v-else和v-else-if的结合使用</title>
+</head>
+<body>
+<div id="app" style="color: #a10c4e">
+  {{message}}
+  <hr />
+  <h1 v-if="test>=90">优秀</h1>
+  <h1 v-else-if="test>=80">良好</h1>
+  <h1 v-else>及格</h1>
+
+  <hr />
+  <h1 v-text="result"></h1>
+  <h1>{{result}}</h1>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'v-else-if 限制：前一兄弟元素必须有 v-if 或 v-else-if。',
+      test: 90
+    },
+    computed: {
+      result() {
+        let message="测试";
+        let  test=this.test;
+
+        if (test>=90){
+          message="成绩优秀";
+        }else if (test>=80){
+          message="成绩还行";
+        }else {
+          message="不行";
+        }
+        return message;
+      }
+    }
+  })
+</script>
+</body>
+</html>
