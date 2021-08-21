@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>用户登录切换的案例</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <hr />
+  <span v-if="isUser">
+    <h1>用户账号</h1>
+    <label for="username">用户账户</label>
+   <!-- 若不希望切换后的输入输出框复用可以加上一个 key 若两个切换的key不一样 则不会复用-->
+    <input type="text" id="username" placeholder="用户账号" key="username">
+  </span>
+  <span v-else>
+     <h1>用户邮箱</h1>
+    <label for="email">用户邮箱</label>
+    <input type="text" id="email" placeholder="邮箱地址">
+  </span>
+  <button @click="onLogin()">切换类型</button>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      isUser: true
+    },
+    methods: {
+      onLogin() {
+        this.isUser=!this.isUser;
+      }
+    }
+  })
+</script>
+
+</body>
+</html>
