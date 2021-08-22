@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <!--表格中的数据-->
-    <tr v-for="book in books">
+    <tr v-for="(book,index) in books">
       <td>{{book.id}}</td>
       <td>{{book.name}}</td>
       <td>{{book.beginDate}}</td>
@@ -33,7 +33,9 @@
       <!--<td>{{book.price | 过滤器}}</td>-->
       <td>{{book.price | showPrice}}</td>
       <td>
-       <button>减少1</button> {{book.count}} <button>增加1</button>
+       <button @click="decrement(index)" v-bind:disabled="book.count<=1">减少1</button>
+        {{book.count}}
+        <button @click="increment(index)">增加1</button>
       </td>
       <td>
         <button>移除</button>
@@ -42,7 +44,9 @@
     </tbody>
   </table>
 
-  <h2>总价格{{(888.876 )}}</h2>
+  <h2 >总价格{{(888.876 )}}</h2>
+
+<!--  <button > 你 点 不 了</button>-->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>

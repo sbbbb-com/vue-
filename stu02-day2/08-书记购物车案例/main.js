@@ -38,6 +38,16 @@ const app=new Vue({
         return "￥"+price.toFixed(2);
       }*/
 
+      //控制商品的增加 或者减少
+      increment(index){
+        this.books[index].count++;
+      },
+      decrement(index){
+        if (this.books[index].count>=1){
+          this.books[index].count--;
+        }
+
+      }
   },
   //过滤器
   filters: {
