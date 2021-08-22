@@ -27,7 +27,11 @@
       <td>{{book.id}}</td>
       <td>{{book.name}}</td>
       <td>{{book.beginDate}}</td>
-      <td>{{book.price}}</td>
+      <!--123.toFixed (保留两位小数)-->
+     <!-- <td>{{getFinalPrice(book.price)}}</td>-->
+      <!--或者使用过滤器-->
+      <!--<td>{{book.price | 过滤器}}</td>-->
+      <td>{{book.price | showPrice}}</td>
       <td>
        <button>减少1</button> {{book.count}} <button>增加1</button>
       </td>
@@ -37,9 +41,14 @@
     </tr>
     </tbody>
   </table>
+
+  <h2>总价格{{(888.876 )}}</h2>
 </div>
 
-<script src="../js/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <script src="main.js"></script>
+<script>
+
+</script>
 </body>
 </html>

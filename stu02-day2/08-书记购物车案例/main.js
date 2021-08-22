@@ -13,7 +13,7 @@ const app=new Vue({
           id: 2,
           name: "《UNIX编程艺术》",
           beginDate: "2006-2",
-          price: 59.00,
+          price: 59.009,
           count: 1
         },
         {
@@ -31,6 +31,18 @@ const app=new Vue({
           count: 1
         }
       ]
-    }
+    },
+    methods:  {
+      /*getFinalPrice(price){
+        //保留两位小数 并且拼接上去中文字符的函数
+        return "￥"+price.toFixed(2);
+      }*/
 
+  },
+  //过滤器
+  filters: {
+    showPrice(price) {
+      return "￥"+parseInt(price).toFixed(2);
+    }
+  }
 })
