@@ -10,41 +10,47 @@
 
 
 <div id="app">
-  <table>
-    <thead>
-    <tr>
-      <th></th>
-      <th>书籍名称</th>
-      <th>出版日期</th>
-      <th>价格</th>
-      <th>购买数量</th>
-      <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--表格中的数据-->
-    <tr v-for="(book,index) in books">
-      <td>{{book.id}}</td>
-      <td>{{book.name}}</td>
-      <td>{{book.beginDate}}</td>
-      <!--123.toFixed (保留两位小数)-->
-     <!-- <td>{{getFinalPrice(book.price)}}</td>-->
-      <!--或者使用过滤器-->
-      <!--<td>{{book.price | 过滤器}}</td>-->
-      <td>{{book.price | showPrice}}</td>
-      <td>
-       <button @click="decrement(index)" v-bind:disabled="book.count<=1">减少1</button>
-        {{book.count}}
-        <button @click="increment(index)">增加1</button>
-      </td>
-      <td>
-        <button>移除</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div v-if="books.length!==0">
+    <table>
+      <thead>
+      <tr>
+        <th></th>
+        <th>书籍名称</th>
+        <th>出版日期</th>
+        <th>价格</th>
+        <th>购买数量</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!--表格中的数据-->
+      <tr v-for="(book,index) in books">
+        <td>{{book.id}}</td>
+        <td>{{book.name}}</td>
+        <td>{{book.beginDate}}</td>
+        <!--123.toFixed (保留两位小数)-->
+        <!-- <td>{{getFinalPrice(book.price)}}</td>-->
+        <!--或者使用过滤器-->
+        <!--<td>{{book.price | 过滤器}}</td>-->
+        <td>{{book.price | showPrice}}</td>
+        <td>
+          <button @click="decrement(index)" v-bind:disabled="book.count<=1">减少1</button>
+          {{book.count}}
+          <button @click="increment(index)">增加1</button>
+        </td>
+        <td>
+          <button @click="removeHandle(index)">移除</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <h2 >总价格{{totalPrice | showPrice}}</h2>
+  </div>
+  <div v-else>
+    <h1 style="color: red">购物车为空</h1>
+  </div>
 
-  <h2 >总价格{{(888.876 )}}</h2>
+
 
 <!--  <button > 你 点 不 了</button>-->
 </div>

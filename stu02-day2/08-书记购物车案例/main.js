@@ -46,7 +46,11 @@ const app=new Vue({
         if (this.books[index].count>=1){
           this.books[index].count--;
         }
-
+      },
+      //移除按钮
+      removeHandle(index){
+        /*splice 舌普赖斯*/
+        this.books.splice(index,1)
       }
   },
   //过滤器
@@ -54,5 +58,15 @@ const app=new Vue({
     showPrice(price) {
       return "￥"+parseInt(price).toFixed(2);
     }
+  },
+  //计算属性
+  computed:{
+      totalPrice(){
+        let  t=0;
+        for (let i = 0; i < this.books.length; i++) {
+          t+=this.books[i].price*this.books[i].count;
+        }
+        return t;
+      }
   }
 })
