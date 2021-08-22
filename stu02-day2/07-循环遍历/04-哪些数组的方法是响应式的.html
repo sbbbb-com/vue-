@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>那些数组的方法是响应式的</title>
+</head>
+<body>
+
+<div id="app">
+  {{message}}
+  <hr />
+  <ul>
+    <li v-for="item in letters" >{{item}}</li>
+  </ul>
+
+  <button @click="btnClick">按钮</button>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      letters: ['a','b','c','d','e']
+    },
+    methods: {
+      btnClick() {
+        // 1.push方法 [能够响应式，改变后界面也会刷新]
+        //this.letters.push("H");
+        //this.letters.push("ss","dd",'dd');  //还可以一次添加多个元素
+
+        //2.0 通过索引值 修改数组中的元素 [不能响应式]
+        //this.letters[0]='sb';
+
+        //2.pop()  从尾部删除元素 最后一个 [能够响应式]
+        //this.letters.pop();
+
+        //3.shift 从头部删除元素  第一个 [能够响应式]
+        //this.letters.shift()
+
+        //4.unshift(); 在数组最前面添加元素 [能够响应式]
+        //this.letters.unshift('451');
+        //this.letters.unshift("dd","dd","oo"); //还可以一次添加多个元素
+
+        //5.  splice（） 作用，删除元素/插入元素/替换元素  [能够响应式]
+        //如果希望删除元素： 第一个元素删除元素开始耳朵下标  第二个参数传入你要删除元素的个数
+        //this.letters.splice(1,1);  //相当于删除第二个元素
+
+        // 如果仅仅用一个元素 表示从传入元素一直到最后删除所有
+        //this.letters.splice(2)
+        //上面代码相当于
+        /*const  start=2;
+        this.letters.splice(start,this.letters.length-start);*/
+
+        //替换元素 [能够响应式]
+        // 第一个参数表示开始操作元素位置 第二个表示操作几个元素 后面两个表示替换后的元素
+        //或者可以理解 通过一二参数对元素进行删除  后面跟着的表示将此插入到删除空间中
+        //this.letters.splice(1,2,'hh2','dd2','cc3');
+        //插入元素
+        //第一个参数表示开始操作元素位置  第二个设置零 表示一个都不删除 最后参数的几个元素表示要插入的元素
+        //this.letters.splice(2,0,'k1','k2','k3');
+
+        //5排序 sort [能够响应式]
+        //this.letters.sort();
+
+        //6.reverse 反转函数  [能够响应式]
+        //this.letters.reverse();
+
+        /**
+         * 综上所述：：除了通过索引修改数组元素不是响应式 其他的都是响应式
+         * 若遇到修改数值： 可以使用替换 this.letters.splice(x,0,x);
+         * 或者使用一下函数
+         * */
+        // set 函数
+        // 参数一 要修改的对象
+        // 参数二 索引值
+        //参数三 修改后的值
+        Vue.set(this.letters,1,89);
+      }
+    }
+  })
+
+
+ /* // 函数接受可变参数
+  function sum(...nums) {
+    let  num=0;
+    for (let i = 0; i < nums.length; i++) {
+      num+=nums[i];
+    }
+    return num;
+  }
+  console.log(sum(1, 2, 5, 6, 8, 6, 8));*/
+
+</script>
+
+</body>
+</html>
