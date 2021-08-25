@@ -63,9 +63,22 @@ const app=new Vue({
   computed:{
       totalPrice(){
         let  t=0;
-        for (let i = 0; i < this.books.length; i++) {
+        //使用普通的for循环计算价格
+        /*for (let i = 0; i < this.books.length; i++) {
           t+=this.books[i].price*this.books[i].count;
+        }*/
+
+        //2.使用for in 计算  in前面也是索引值
+        /*for (let book_i in this.books) {
+          t+=this.books[book_i].price;
+          console.log(book_i)
+        }*/
+
+        //3. 使用 for  of 直接拿到数组中元素对象 直接使用
+        for (let book of this.books) {
+          t+=book.price*book.count;
         }
+
         return t;
       }
   }
