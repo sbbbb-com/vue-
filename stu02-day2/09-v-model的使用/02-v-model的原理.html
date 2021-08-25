@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>v-model的原理</title>
+</head>
+<body>
+<h1>
+  1.v-bind绑定一个value属性
+  <br/>
+  2.v-on指令给当前元素绑定input事件
+</h1>
+<div id="app">
+  {{ message }}
+  <hr />
+<!--  <input type="text" v-model="message" />-->
+<!--  绑定输入事件-->
+<!--  <input type="text" :value="message" @input="valueChange">-->
+  <input type="text" :value="message" @input="message=$event.target.value">
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！'
+    },
+    methods: {
+      valueChange(event){
+        console.log("input");
+
+        this.message=event.target.value;
+      }
+    }
+  })
+</script>
+</body>
+</html>
