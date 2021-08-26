@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>08-组件通信-父组件向子组件通信</title>
+</head>
+<body>
+
+<div id="app">
+<!--  {{ message }}-->
+  <hr />
+<!--  传数据 要用 v-bind-->
+  <cpn :cmessage="message"></cpn>
+</div>
+
+<template id="cpn">
+<div>
+<!--  {{cmovies}}-->
+  <ul>
+    <li v-for="item in cmovies">{{item}}</li>
+  </ul>
+  <hr />
+  <h2>{{cmessage}}</h2>
+</div>
+</template>
+
+<script src="../js/vue.js"></script>
+<script>
+  // 父传子 ：props
+  const  cpn={
+    template: '#cpn',
+    data(){
+        return {}
+    },
+    //props:['cmovies','cmessage']  //通过数组传
+    props: {//通过对象传
+      //1. 类型限制
+     /* cmovies: Array,  //要求传递 cmovies必须是array类型 数组类型
+      cmessage: String*/
+
+      //2. 提供一些默认值 与类型约束
+      cmessage: {
+        type: String,
+        //当没有传值时候 显示默认值
+        default: 'aaaa',
+        //当使用此组件时 必须要传递的此值  否则就会报错
+        required: true
+      },
+      // 类型是对象或者数组时，默认值必须是一个函数
+      cmovies: {
+        type: Array,
+        //default: ['t1']  //2.5.x 一下 报错
+        //必须是一个函数
+        default() {
+          return [1];
+        }
+      }
+    }
+
+  }
+
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！',
+      movies: ['猴王','海贼王','天下第一','天龙八部']
+    },
+    components: {
+      //'cpn' : cpn
+      cpn  //对象字面量增强的属性增强写法 同上
+    }
+  })
+
+</script>
+
+</body>
+</html>
