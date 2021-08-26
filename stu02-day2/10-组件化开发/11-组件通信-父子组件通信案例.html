@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>父子组件通信案例</title>
+</head>
+<body>
+
+<div id="app">
+    <cpn :number1="num1"
+         :number2="num2"
+         @num1change="num1change"
+        @num2change="num2change" />  <!-- 将子组件发射出来事件绑定到父组件-->
+
+</div>
+
+
+<!--模版分离-->
+<template id="cpn">
+ <div>
+   <h2>props::【{{number1}}】</h2>
+   <h2>data:number1:【{{dnumber1}}】</h2>
+<!--   <input type="text" v-model="dnumber1">-->
+   <input type="text" :value="dnumber1" @input="number1Input">
+
+   <h2>props:number2:【{{number2}}】</h2>
+   <h2>data::【{{dnumber2}}】</h2>
+<!--   <input type="text" v-model="dnumber2">-->
+   <input type="text" v-bind:value="dnumber2" @input="number2Input">
+ </div>
+</template>
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+        num1: 1,
+        num2: 0
+    },
+    //处理 子组件发射出来的绑定事件
+    methods: {
+      num1change(value){
+        // 数字乘上个数值进行类型转换 隐式减乘除都行
+        //this.num1=value *1;
+        this.num1=parseFloat(value);
+
+      },
+      num2change: function (value) {
+        //将字符串转换为数字类型
+        let number = parseFloat(value);
+        this.num2 = number;
+      }
+    },
+    //注册组件
+    components :{
+      cpn: {
+        template: '#cpn',
+        //使用props将父组件/【vue实例】数据向子组件传递
+        props: {
+          number1: Number,
+          number2: Number
+        },
+        data(){
+          return {
+            dnumber1: this.number1,
+            dnumber2: this.number2
+
+          }
+        },
+        // 自定义输入值改变后的函数
+        methods: {
+          //**1.将input中的value赋值到dnumber中
+          number1Input(event){
+            this.dnumber1=event.target.value;
+
+            //**2.为了将父组件可以修改值 发出一个事件
+            //当输入框改变后进行的发射到父组件的事件
+            this.$emit('num1change',this.dnumber1)
+
+            //**3.为了将父组件可以修改值 发出一个事件
+            this.dnumber2=this.dnumber1*100;
+            this.$emit('num2change',this.dnumber2);
+          },
+          number2Input(event){
+            this.dnumber2=event.target.value;
+            this.$emit('num2change',this.dnumber2)
+
+            //**3.为了将父组件可以修改值 发出一个事件
+            this.dnumber1=this.dnumber2/100;
+            this.$emit('num1change',this.dnumber1);
+          }
+        }
+      }
+    }
+  })
+</script>
+
+</body>
+</html>
