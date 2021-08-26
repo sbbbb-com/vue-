@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>全局组件 局部组件</title>
+</head>
+<body>
+
+<div id="app">
+  {{ message }}
+
+<cpn></cpn>
+</div>
+
+<div id="id2">
+  <cpn></cpn>
+</div>
+
+
+<script src="../js/vue.js"></script>
+<script>
+
+  //1.创建组件的构造器
+  const cpnC=Vue.extend({
+    template:  `
+    <div>
+      <h2>标题</h2>
+      <h3>内容11111</h3>
+    </div>
+    `
+  })
+
+  //2.注册组件（全局组件 意味着可以在多个vue的实例下面使用）
+  //Vue.component('cpn',cpnC);
+
+  // 怎么注册的组件才是局部组件？？
+
+  //挂载 id
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！'
+    },
+    // 在单个挂载的app里 注册的组件是局部组件
+    comments: {
+      //cpn 使用组件时的标签名 ： 组件构造器
+      cpn:  cpnC
+    }
+  })
+
+  //挂载id2
+  const vue = new Vue({
+    el: '#id2'
+  });
+</script>
+
+</body>
+</html>
