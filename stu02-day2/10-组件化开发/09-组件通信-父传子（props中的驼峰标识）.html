@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>父传子 驼峰标识</title>
+</head>
+<body>
+
+<div id="app">
+
+  <cpn :c-info="info"
+       :child-my-message="message" ></cpn>
+
+</div>
+
+<template id="cpn" >
+<!--  模版有多个标签 则必须有一个 根div 就是最外面的div-->
+  <div>
+    <h2>{{cInfo}}</h2>
+    <h2>{{childMyMessage}}</h2>
+  </div>
+</template>
+
+<script src="../js/vue.js"></script>
+<script>
+
+  const cpn={
+    template: '#cpn',
+    props: {
+      cInfo: {
+        type: Object,
+        default() {
+          return {};
+        }
+      },
+      childMyMessage:{
+        type: String,
+        default: ''
+      }
+    }
+  }
+
+  const app = new Vue({
+    el: '#app',
+    data: {
+      info: {
+        name: 'testname',
+        age: 19,
+        height: 1.88
+      },
+      message: 'aa'
+    },
+    //注册组件
+    components: {
+      cpn
+    }
+  })
+</script>
+
+</body>
+</html>
