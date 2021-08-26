@@ -25,9 +25,18 @@
 
   <h2>你的爱好有</h2>
   <ul>
-    <li v-for="item in hobbies">{{item}}</li>
+    <li v-for="item in hobbies" >{{item}}</li>
   </ul>
+
+  <hr />
+
+  <label v-for="item in originHobbies" :for="item">
+    <input type="checkbox"
+           :value="item" v-model="hobbies" id="item">{{item}}
+  </label>
 </div>
+
+
 
 
 <script src="../js/vue.js"></script>
@@ -37,7 +46,8 @@
     data: {
       message: '你好世界！',
       isAgree: false,  //单选框
-      hobbies: []      //多选框
+      hobbies: [] ,     //多选框
+      originHobbies: ['篮球','足球','羽毛球','乒乓球']
     }
   })
 </script>
