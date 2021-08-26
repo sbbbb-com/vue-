@@ -10,7 +10,7 @@
     <cpn :number1="num1"
          :number2="num2"
          @num1change="num1change"
-        @num2change="num2change" />  <!-- 将子组件发射出来事件绑定到父组件-->
+         @num2change="num2change" />  <!-- 将子组件发射出来事件绑定到父组件-->
 
 </div>
 
@@ -21,12 +21,16 @@
    <h2>props::【{{number1}}】</h2>
    <h2>data:number1:【{{dnumber1}}】</h2>
 <!--   <input type="text" v-model="dnumber1">-->
-   <input type="text" :value="dnumber1" @input="number1Input">
+   <input type="text"
+          :value="dnumber1"
+         @input="number1Input"> <!-- 监听输入改变的事件-->
 
    <h2>props:number2:【{{number2}}】</h2>
    <h2>data::【{{dnumber2}}】</h2>
 <!--   <input type="text" v-model="dnumber2">-->
-   <input type="text" v-bind:value="dnumber2" @input="number2Input">
+   <input type="text"
+          v-bind:value="dnumber2"
+          @input="number2Input">
  </div>
 </template>
 
@@ -89,6 +93,13 @@
             //**3.为了将父组件可以修改值 发出一个事件
             this.dnumber1=this.dnumber2/100;
             this.$emit('num1change',this.dnumber1);
+          }
+        },
+        watch: {
+          //监听属性的改变 当值改变时 触发下面函数 如dnumber1
+          dnumber1(newValue,oldValue){
+            console.log("new=="+newValue);
+            console.log("old=="+oldValue)
           }
         }
       }

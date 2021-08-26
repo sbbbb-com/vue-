@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>组件访问 父访问子</title>
+</head>
+<body>
+
+<div id="app">
+  {{ message }}
+  <hr />
+  <cpn ref="aaa"></cpn>
+  <cpn></cpn>
+  <cpn  ref="bbb"></cpn>
+  <button @click="btnClick">按钮</button>
+</div>
+
+<template id="cpn">
+  <h1>子组件</h1>
+</template>
+
+<script src="../js/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: '你好世界！'
+    },
+    methods: {
+      btnClick(){
+       /* console.log(this.$children);
+        console.log(this.$children[0].showMessage());
+
+        for (let chid of this.$children) {
+          console.log(chid.name);
+          chid.showMessage();
+        }*/
+
+        // 2.$refs
+        // $refs=> 对象类型，默认是一个空的对象 ref=‘xxx’
+        console.log(this.$refs.aaa.name);
+      }
+    },
+    components:　{
+      cpn: {
+        template: '#cpn',
+        data(){
+          return {
+            name: '子组件的name属性的值'
+          }
+        },
+        methods: {
+          showMessage(){
+            console.log("showMessage!!")
+          }
+        }
+      }
+    }
+  })
+</script>
+
+</body>
+</html>
