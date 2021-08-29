@@ -10,5 +10,17 @@ import {name,age,height} from "./js/info";
 console.log(name);
 console.log(age);
 console.log(height);
+console.log("base64")
 
 console.log("02")
+
+// 3.依赖 css文件
+require('./css/normal.css')
+
+// 4.依赖 less文件
+require('./css/special.less')
+
+
+let app = new Vue({
+
+});
