@@ -1,26 +1,31 @@
-// 使用 `import` 命令加载的 Vue 构建版本
-// (runtime-only or standalone) 已经在 webpack.base.conf 中设置了别名。
 import Vue from 'vue'
 import App from './App'
 
 Vue.config.productionTip = false
 
+const cpn={
+  template: '<div>嘿嘿：{{message}}</div>',
+  data(){
+    return {
+      message: '我是组件message！'
+    }
+  }
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  components: { App },
-  template: '<App/>'
+ /* components: { App },
+  template: '<App/>'*/
+  render: function (createElement) {
+    // 普通用法 1.createElement(‘标签’，｛标签的属性｝,[‘内容’])
+    /*return createElement('h2',
+      {class: 'box'},
+      ['hello word',createElement('button',['按钮'])] );*/
+
+    //2.传入组件的对象
+    return createElement(App);
+  }
 })
 
-function abc (num1, num2) {
-  return num1 + num2
-}
 
-console.log(abc(10, 20))
-
-function kk(){
-
-  console.log('555');
-}
-
-kk()
