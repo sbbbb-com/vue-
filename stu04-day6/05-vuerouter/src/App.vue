@@ -22,8 +22,11 @@
     <h3>上面</h3>
     <router-view></router-view>
     <h4>下面</h4>-->
-    <button @click="homeClick">首页</button>
-    <button @click="aboutClick">关于</button>
+    <!--    <button @click="homeClick">首页</button>
+    <button @click="aboutClick">关于</button>-->
+    <router-link to="/home" replace tag="button">首页</router-link>
+    <router-link to="/about" replace tag="button">关于</router-link>
+    <router-link  v-bind:to="'/user/'+userId" replace tag="button">用户</router-link>
 
     <router-view></router-view>
 
@@ -34,8 +37,13 @@
 import Home from "./components/Home";
 export default {
   name: 'App',
+  data(){
+    return {
+      userId: 'lisi'
+    }
+  },
   methods: {
-    homeClick(){
+    /*homeClick(){
       console.log('homeClick');
       //通过代码修改路由 vue-router 调用vue路由自定义对象去操纵
       //this.$router.push('/home');
@@ -46,7 +54,7 @@ export default {
       //this.$router.push('/about');
       this.$router.replace('/about');
     }
-
+*/
   }
 }
 </script>

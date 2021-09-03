@@ -4,6 +4,7 @@ import Vue from "vue";
 //导入自定义组件信息
 import Home from "../components/Home";
 import About from "../components/About";
+import User from "../components/User";
 
 //1.通过Vue.use(c插件)， 安装插件
 Vue.use(VueRouter)
@@ -25,6 +26,10 @@ const  routes=[
   {
     path: '/about',
     component: About
+  },
+  {
+    path: '/user/:userId',
+    component: User
   }
 ]
 
@@ -34,7 +39,7 @@ const router=new VueRouter({
   routes,
   //将页面井号的哈希模式改为HTML5的history模式
   mode: "history",
-  //更改 点击后的活动 附加属性
+  //更改 点击后的活动 附加class属性名称
   linkActiveClass: 'active'
 })
 
