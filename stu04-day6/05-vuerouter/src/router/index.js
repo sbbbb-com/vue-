@@ -12,6 +12,9 @@ import User from "../components/User";
 const Home=()=>import('../components/Home')
 const About=()=>import('../components/About')
 const User=()=>import('../components/User')
+//子路由的懒加载
+const HomeMessage=()=>import('../components/HomeMessage')
+const HomeNews=()=>import('../components/HomeNews')
 
 //1.通过Vue.use(c插件)， 安装插件
 Vue.use(VueRouter)
@@ -28,7 +31,24 @@ const  routes=[
   },
   {
     path: '/home',
-    component: Home
+    component: Home,
+    //配置 news message两个子路由
+    children: [
+      //添加默认的 访问子路径
+      {
+        path: '',
+        redirect: 'news'
+      },
+      {
+        //在子路由中 不需要加 ”/“ 会自动拼接
+        path: 'news',
+        component: HomeNews
+      },
+      {
+        path: 'message',
+        component: HomeMessage
+      }
+    ]
   },
   {
     path: '/about',

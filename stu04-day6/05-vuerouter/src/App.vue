@@ -24,9 +24,9 @@
     <h4>下面</h4>-->
     <!--    <button @click="homeClick">首页</button>
     <button @click="aboutClick">关于</button>-->
-    <router-link to="/home" replace tag="button">首页</router-link>
-    <router-link to="/about" replace tag="button">关于</router-link>
-    <router-link  v-bind:to="'/user/'+userId" replace tag="button">用户</router-link>
+    <router-link to="/home" replace >首页</router-link>
+    <router-link to="/about" replace >关于</router-link>
+    <router-link  v-bind:to="'/user/'+userId" replace>用户</router-link>
 
     <router-view></router-view>
 
@@ -66,7 +66,7 @@ h3,h4{
 }
 
 .active{
-  color: #e3e3ef;
-  background: #2c3e50;
+  color: #ec0b0b;
+  background: #3f502c;
 }
 </style>
