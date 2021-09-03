@@ -2,9 +2,16 @@
 import VueRouter from "vue-router";
 import Vue from "vue";
 //导入自定义组件信息
+/*
 import Home from "../components/Home";
 import About from "../components/About";
 import User from "../components/User";
+*/
+
+//路由懒加载
+const Home=()=>import('../components/Home')
+const About=()=>import('../components/About')
+const User=()=>import('../components/User')
 
 //1.通过Vue.use(c插件)， 安装插件
 Vue.use(VueRouter)
