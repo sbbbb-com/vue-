@@ -12,6 +12,7 @@ import User from "../components/User";
 const Home=()=>import('../components/Home')
 const About=()=>import('../components/About')
 const User=()=>import('../components/User')
+const Profile = () => import('../components/Profile')
 //子路由的懒加载
 const HomeMessage=()=>import('../components/HomeMessage')
 const HomeNews=()=>import('../components/HomeNews')
@@ -57,6 +58,10 @@ const  routes=[
   {
     path: '/user/:userId',
     component: User
+  },
+  {
+    path: '/profile',
+    component: Profile
   }
 ]
 

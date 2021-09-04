@@ -26,6 +26,10 @@
     <button @click="aboutClick">关于</button>-->
     <router-link to="/home" replace >首页</router-link>
     <router-link to="/about" replace >关于</router-link>
+<!--  <router-link to="/profile" >档案</router-link>-->
+    <router-link v-bind:to="{path: '/profile',query: {name: '嘿嘿',age: 48,height: 1.88}}">
+      档案
+    </router-link>
     <router-link  v-bind:to="'/user/'+userId" replace>用户</router-link>
 
     <router-view></router-view>
