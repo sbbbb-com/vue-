@@ -1,17 +1,40 @@
 <template>
-  <div class="tab-bar-item">
-    <slot name="item-icon"></slot>
-    <slot name="item-text"></slot>
-    <!--
-    <img src="../../assets/img/tabbar/home.svg">
-     <div>首页</div>
-     -->
+  <div class="tab-bar-item" @click="itemClick">
+    <div v-if="!isActive">
+      <slot name="item-icon"></slot>
+    </div>
+    <div v-else>
+      <slot name="item-icon-active"></slot>
+    </div>
+
+    <div :class="{active:isActive}">
+      <slot name="item-text"></slot>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TabBarItem"
+  name: "TabBarItem",
+  //自定义属性  用来接收路径变量
+  props: {
+    path: String
+  },
+  data() {
+    return {
+      isActive: true
+    }
+  },
+  methods: {
+    //监听组件的点击事件
+    itemClick(){
+      //解决点击重复报错问题
+      this.$router.push('/location').catch(error=>{
+        console.log(error);})
+      //根据获取到的自定义属性 即：path路径 跳转到指定path
+      this.$router.replace(this.path)
+    }
+  }
 }
 </script>
 
@@ -34,5 +57,9 @@ export default {
   vertical-align: middle;
 
   margin-bottom: 2px;
+}
+
+.active {
+  color: #a10c4e;
 }
 </style>

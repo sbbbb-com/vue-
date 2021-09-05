@@ -1,6 +1,7 @@
 {
   "name": "tabbar",
   "version": "1.0.0",
+  "exports": 8080,
   "description": "一个vue项目",
   "author": "sbbbb-com <17719357702@163.com>",
   "private": true,
