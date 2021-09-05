@@ -7,7 +7,13 @@
 
 <script>
 export default {
-  name: "About"
+  name: "About" ,
+  created() {
+    console.log("About===当组件被创建出来后回调这个函数 created")
+  },
+  destroyed() {
+    console.log("About====destroyed");
+  }
 }
 </script>
 

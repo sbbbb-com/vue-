@@ -28,18 +28,21 @@ const  routes=[
     //路由默认路径
     path: '',
     //重定向 将页面初始化界面重定向为 home界面
-    redirect: '/home'
+    redirect: '/home',
   },
   {
     path: '/home',
     component: Home,
+    meta: {
+      title: '首页'
+    },
     //配置 news message两个子路由
     children: [
       //添加默认的 访问子路径
-      {
+      /*{
         path: '',
         redirect: 'news'
-      },
+      },*/
       {
         //在子路由中 不需要加 ”/“ 会自动拼接
         path: 'news',
@@ -53,14 +56,28 @@ const  routes=[
   },
   {
     path: '/about',
-    component: About
+    meta: {
+      title: '关于'
+    },
+    component: About,
+    beforeEnter: (to,from,next)=>{
+      //console.log("about beforeEnter");
+      next();
+    }
   },
   {
-    path: '/user/:userId',
-    component: User
+    path: '/user/:id',
+    component: User,
+    meta: {
+      title: '用户'
+    }
+
   },
   {
     path: '/profile',
+    meta: {
+      title: '档案'
+    },
     component: Profile
   }
 ]
@@ -75,6 +92,28 @@ const router=new VueRouter({
   linkActiveClass: 'active'
 })
 
+//配置全局导航守卫
+/**
+ * 前置守卫（guard） 【回调】 在跳转前回调的
+ * to
+ * from
+ * next() 必须执行的
+ */
+router.beforeEach((to, from, next) =>{
+  // 从from路由 跳转到 to的路由
+  document.title=to.matched[0].meta.title;
+  //console.log(to);
+  //console.log("==========beforeEach=========");
+  next()
+})
+
+/**
+ * 后置的钩子（hook） 【回调】 在跳转后回调
+ */
+router.afterEach((to, from) =>{
+  //console.log("---afterEach----")
+} )
 
 
+//3.将router对象传入到Vue实例
 export default router
