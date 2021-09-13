@@ -7,7 +7,7 @@
       <slot name="item-icon-active"></slot>
     </div>
 
-    <div :class="{active:isActive}">
+    <div  :style="activeStyle">
       <slot name="item-text"></slot>
     </div>
   </div>
@@ -18,11 +18,30 @@ export default {
   name: "TabBarItem",
   //自定义属性  用来接收路径变量
   props: {
-    path: String
+    path: String,
+    activeColor: {
+      type: String,
+      default: "red"
+    }
   },
   data() {
     return {
-      isActive: true
+      //底部活动的状态
+      //isActive: true
+    }
+  },
+  //使用计算属性 改变底部活动的状态
+  computed: {
+    isActive(){
+      //this.$route 那一个路由活跃就是拿到哪一个路由对象
+      /*indexOf(this.path) 判读拿到的路由对象里面是否有当前的路由对象
+       *indexOf（）方法返回第一次出现指定值的调用字符串对象内的索引，
+      * 从fromIndex开始搜索。如果找不到该值，则返回-1
+       */
+      return this.$route.path.indexOf(this.path)!==-1;
+    },
+    activeStyle(){
+      return this.isActive ? {color: this.activeColor} :{};
     }
   },
   methods: {

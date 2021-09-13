@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>链式调用</title>
+</head>
+<body>
+
+<script>
+  new Promise((resolve, reject) => {
+
+    //第一次网络请求
+    setTimeout(() => {
+      resolve();
+    }, 1000/*延迟时间*/)
+  }).then(()=>{
+    //第一次拿到结果的处理代码
+    console.log("1hello world");
+    console.log("2hello world");
+    console.log("3hello world");
+    console.log("4hello world");
+    console.log("5hello world");
+    console.log("6hello world");
+
+   return  new Promise((resolve, reject)=>{
+
+     //第二次网络请求的代码
+     setTimeout(()=>{
+
+       resolve();
+     },1000)
+    }).then(()=>{
+
+      //第二次处理的代码
+      console.log("1hello java");
+      console.log("2hello java");
+      console.log("3hello java");
+      console.log("4hello java");
+      console.log("5hello java");
+      console.log("6hello java");
+
+      return new Promise((resolve, reject)=>{
+
+        //第三次网络请求的代码
+
+        setTimeout(()=>{
+          resolve()
+        },1000)
+      })
+    })
+  }).then(()=>{
+
+    //第三次处理的代码
+    console.log("1hello python");
+    console.log("2hello python");
+    console.log("3hello python");
+    console.log("4hello python");
+    console.log("5hello python");
+    console.log("6hello python");
+  })
+</script>
+
+</body>
+</html>
