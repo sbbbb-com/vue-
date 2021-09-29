@@ -1,5 +1,15 @@
 <template>
   <div id="app">
+
+    <h2>-----------App的内容 modules=== -----------</h2>
+    <h2>{{$store.state.moduleA.name}}</h2>
+    <button @click="updateName"> 修改名字</button>
+    <h2>{{$store.getters.fullName}}</h2>
+    <h2>{{$store.getters.fullName2}}</h2>
+    <h2>{{$store.getters.fullName3}}</h2>
+
+    <button @click="asyncUpdateName">异步修改名字</button>
+
     <h2>{{message}}</h2>
     <h1>{{$store.state.counter}}</h1>
     <button @click="addition">+</button>
@@ -20,6 +30,9 @@
 
     <h2>{{$store.getters.moreAgeStu(33)}}</h2>
 
+    <h2>展示info里面内容： {{$store.state.info}}</h2>
+    <button @click="updateInfo">修改info</button>
+
     <h2>传入一个学生</h2>
 
     <h2>--------------Hello Vuex的内容--------------</h2>
@@ -30,6 +43,8 @@
 <script>
 
 import HelloVuex from "./components/HelloVuex";
+//普通以大括号导入
+import {INCREMENT} from "./store/mutations-types";
 
 export default {
   name: 'App',
@@ -53,7 +68,7 @@ export default {
   },
   methods:{
     addition(){
-      this.$store.commit('increment');
+      this.$store.commit(INCREMENT);
     },
     subtraction(){
       this.$store.commit('decrement');
@@ -73,6 +88,28 @@ export default {
     addStudent(){
       const stu={id: 116,name: '测试同学己',age: 38};
       this.$store.commit('addStudent',stu);
+    },
+    updateInfo(){
+      //this.$store.commit("updateInfo");
+      /*this.$store.dispatch('aUpdateInfo',/!*可以传递去个函数*!/{
+        message: '我是携带的消息',
+        success: ()=>{
+          console.log("里面已经完成了！！！")
+        }
+      });*/
+
+      this.$store
+        .dispatch('aUpdateInfo',"我是携带的信息" )
+        .then(res=>{
+          console.log("里面完成了提交！")
+          console.log(res)
+        })
+    },
+    updateName(){
+      this.$store.commit('updateName',"李四")
+    },
+    asyncUpdateName(){
+      this.$store.dispatch('aUpdateName');
     }
   }
 }
