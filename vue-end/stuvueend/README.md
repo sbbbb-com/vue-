@@ -5,22 +5,22 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 编译并重新加载以进行开发
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 为生产而编译和缩小
 ```
 npm run build
 ```
 
-### Run your tests
+### 运行您的测试
 ```
 npm run test
 ```
 
-### Lints and fixes files
+### Lints和fixes文件
 ```
 npm run lint
 ```
