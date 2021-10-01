@@ -17,5 +17,5 @@ export default {
 
 <style>
 /*导入css*/
-@import "./assets/css/base.css";
+@import "assets/css/base.css";
 </style>
