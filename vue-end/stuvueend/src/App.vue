@@ -16,5 +16,6 @@ export default {
 </script>
 
 <style>
-
+/*导入css*/
+@import "./assets/css/base.css";
 </style>
