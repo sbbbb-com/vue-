@@ -5,7 +5,7 @@
       <div class="avatar_box">
         <img src="../assets/logo.png" alt="">
       </div>
-      <!--   登陆   表单区-->
+      <!--   登陆   表单区 ref引用-->
       <el-form  ref="loginFromRef"
                 :rules="loginFormRules"
                 :model="loginForm"
@@ -21,7 +21,7 @@
         </el-form-item>
         <!--按钮区域-->
         <el-form-item class="btns">
-          <el-button type="primary">登陆</el-button>
+          <el-button type="primary" @click="login">登陆</el-button>
           <el-button type="info" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -34,8 +34,28 @@
 export default {
   name: "login",
   methods: {
+    //点击重置按钮 重置表单
     reset(){
-      console.log(11)
+      //通过loginFromRef 引用对象，重置表单
+      console.log("重置表单");
+      this.$refs.loginFromRef.resetFields();
+    },
+    //点击进行登陆前的预验证
+    login(){
+      this.$refs.loginFromRef.validate(async (val) => {
+        if (!val) {
+          return;
+        } else {
+          console.log("发起请求")
+          const {data:res} = await this.$http.post("login", this.loginForm);
+          if (res.meta.status!==200){
+            //使用 挂载的 message
+            this.$message.error("登陆失败")
+          }else {
+            this.$message.success("登陆成功")
+          }
+        }
+      })
     }
   },
   data() {
@@ -55,7 +75,7 @@ export default {
         //验证密码是否合法
         password: [
           {required: true, message: '请输入密码', trigger: 'blur'},
-          {min: 6, max: 16, message: '密码长度在 6 到 16 个字符之间', trigger: 'blur'}
+          {min: 3, max: 16, message: '密码长度在3 到 16 个字符之间', trigger: 'blur'}
         ]
       }
     }
