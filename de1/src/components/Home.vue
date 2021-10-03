@@ -31,5 +31,7 @@ export default {
 
 <style lang="less" scoped>
 
-
+.el-header{
+  background-color:red ;
+}
 </style>
