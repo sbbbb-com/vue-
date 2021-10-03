@@ -50,12 +50,40 @@
 <script>
 export default {
   name: "Home",
+  data(){
+    return {
+      //定义保存左侧菜单数据
+      menuList: []
+    }
+  },
+  //定义内置的生命周期函数  页面加载完执行此
+  created() {
+    //获取菜单数据 赋值给上面的自定义菜单列表对象
+    this.getMenuList();
+  },
   methods: {
     logout() {
       // 清除会话保存的 token
       window.sessionStorage.clear()
       //使用跳转到登陆页
       this.$router.push("/login")
+    },
+    //发起请求 获取左侧所有菜单数据的 函数
+    getMenuList(){
+      this.$http("menus").then(res=>{
+        if (res.data.meta.status===200){
+          //获取数据成功
+          this.menuList=res.data.data
+          //console.log(this.menuList);
+        }else {
+          //获取数据失败
+          console.log("获取数据失败："+res.data.meta.msg)
+        }
+
+      }).catch(err=>{
+        console.log(err)
+      })
+
     }
   }
 }
