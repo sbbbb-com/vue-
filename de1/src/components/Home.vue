@@ -15,29 +15,30 @@
       <el-aside width="200px">
         <!--侧边栏菜单区域-->
         <el-menu
+          unique-opened
           background-color="#333744"
           text-color="#fff"
           active-text-color="#409EFF">
           <!--一级菜单-->
-          <el-submenu :index="item.id"
+          <el-submenu :index="item.id+''"
                       v-for="item in menuList"
                       :key="item.id">
           <!--一级菜单的模版区-->
             <template slot="title">
             <!--i 包裹是图标-->
-              <i class="el-icon-location"></i>
+              <i :class="iconsObj[item.id]"></i>
               <!-- 文字区域 -->
               <span>{{item.authName}}</span>
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="children.id"
+            <el-menu-item :index="children.id+''"
                           v-for="children in item.children"
                           :key="children.id">
               <!--二级菜单的模版区-->
               <template slot="title">
                 <!--i 包裹是图标-->
-                <i class="el-icon-menu"></i>
+                <i class="iconfont icon-qiapianxingshi"></i>
                 <!-- 文字区域 -->
                 <span>{{children.authName}}</span>
               </template>
@@ -128,9 +129,19 @@ export default {
 
 .el-aside {
   background-color: #323743;
+
+  //微调边框线
+  .el-menu{
+    border-right: none;
+  }
 }
 
 .el-main {
   background-color: #eaedf1;
+}
+
+.iconfont{
+  //调节图标与文本间的间距
+  margin-right: 10px;
 }
 </style>
