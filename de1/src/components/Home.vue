@@ -17,25 +17,29 @@
         <el-menu
           background-color="#333744"
           text-color="#fff"
-          active-text-color="#ffd04b">
+          active-text-color="#409EFF">
           <!--一级菜单-->
-          <el-submenu index="1">
+          <el-submenu :index="item.id"
+                      v-for="item in menuList"
+                      :key="item.id">
           <!--一级菜单的模版区-->
             <template slot="title">
             <!--i 包裹是图标-->
               <i class="el-icon-location"></i>
               <!-- 文字区域 -->
-              <span>导航一</span>
+              <span>{{item.authName}}</span>
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item index="1-1">
+            <el-menu-item :index="children.id"
+                          v-for="children in item.children"
+                          :key="children.id">
               <!--二级菜单的模版区-->
               <template slot="title">
                 <!--i 包裹是图标-->
-                <i class="el-icon-location"></i>
+                <i class="el-icon-menu"></i>
                 <!-- 文字区域 -->
-                <span>导航一</span>
+                <span>{{children.authName}}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -53,7 +57,16 @@ export default {
   data(){
     return {
       //定义保存左侧菜单数据
-      menuList: []
+      menuList: [],
+      //根据旁边菜单的编号匹配对应的图标
+      iconsObj: {
+        '125': 'iconfont icon-yonghu',
+        '103': 'iconfont icon-shezhi',
+        '101': 'iconfont icon-gouwuche',
+        '102': 'iconfont icon-dingdan',
+        '145': 'iconfont icon-others',
+
+      }
     }
   },
   //定义内置的生命周期函数  页面加载完执行此
@@ -74,7 +87,7 @@ export default {
         if (res.data.meta.status===200){
           //获取数据成功
           this.menuList=res.data.data
-          //console.log(this.menuList);
+          console.log(this.menuList);
         }else {
           //获取数据失败
           console.log("获取数据失败："+res.data.meta.msg)
