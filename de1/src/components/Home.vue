@@ -19,6 +19,7 @@
           unique-opened
           :collapse="isCollapse"
           :collapse-transition="false"
+          :router="true"
           background-color="#333744"
           text-color="#fff"
           active-text-color="#409EFF">
@@ -35,7 +36,7 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="children.id+''"
+            <el-menu-item :index="'/'+children.path"
                           v-for="children in item.children"
                           :key="children.id">
               <!--二级菜单的模版区-->
