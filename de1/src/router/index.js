@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 const login = () => import('@/components/Login')
 const Test = () => import('@/components/Test')
 const Home = () => import('@/components/Home')
-
+const Welcome = () => import('@/components/Welcome')
 
 Vue.use(VueRouter)
 
@@ -16,7 +16,15 @@ const router = new VueRouter({
     {path: '/', redirect: '/login'},
     {path: '/login', component: login},
     {path: '/test', component: Test},
-    {path: '/home', component: Home}
+    {   path: '/home',
+        component: Home,
+        //重定向到 Welcome
+        redirect: '/welcome',
+        //定义home的子页面路由
+        children: [
+            {path: '/Welcome',component:Welcome}
+        ]
+    }
   ]
 })
 

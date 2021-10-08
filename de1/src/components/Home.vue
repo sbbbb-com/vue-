@@ -12,10 +12,13 @@
     <!--页面主体区域-->
     <el-container>
       <!-- 侧边栏-->
-      <el-aside width="200px">
+      <el-aside :width="isCollapse? '64px': '200px'">
+        <div class="toggle-button" @click="toggleCollapse">||||</div>
         <!--侧边栏菜单区域-->
         <el-menu
           unique-opened
+          :collapse="isCollapse"
+          :collapse-transition="false"
           background-color="#333744"
           text-color="#fff"
           active-text-color="#409EFF">
@@ -66,8 +69,9 @@ export default {
         '101': 'iconfont icon-gouwuche',
         '102': 'iconfont icon-dingdan',
         '145': 'iconfont icon-others',
-
-      }
+      },
+      //定义布尔值 是否折叠
+      isCollapse: false
     }
   },
   //定义内置的生命周期函数  页面加载完执行此
@@ -97,7 +101,10 @@ export default {
       }).catch(err=>{
         console.log(err)
       })
-
+    },
+    //点击按钮展开左侧菜单 切换菜单的折叠与展开
+    toggleCollapse(){
+      this.isCollapse=!this.isCollapse;
     }
   }
 }
@@ -143,5 +150,15 @@ export default {
 .iconfont{
   //调节图标与文本间的间距
   margin-right: 10px;
+}
+
+.toggle-button{
+  background-color: #4A5064;
+  font-size: 10px;
+  line-height: 24px;
+  color: white;
+  text-align: center;
+  letter-spacing: 0.2em;
+  cursor: pointer;
 }
 </style>
