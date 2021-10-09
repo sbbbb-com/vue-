@@ -20,6 +20,7 @@
           :collapse="isCollapse"
           :collapse-transition="false"
           :router="true"
+          :default-active="activePath"
           background-color="#333744"
           text-color="#fff"
           active-text-color="#409EFF">
@@ -36,9 +37,11 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="'/'+children.path"
-                          v-for="children in item.children"
-                          :key="children.id">
+            <el-menu-item
+              @click="saveNavState('/'+children.path)"
+              :index="'/'+children.path"
+              v-for="children in item.children"
+              :key="children.id">
               <!--二级菜单的模版区-->
               <template slot="title">
                 <!--i 包裹是图标-->
@@ -75,13 +78,17 @@ export default {
         '145': 'iconfont icon-others',
       },
       //定义布尔值 是否折叠
-      isCollapse: false
+      isCollapse: false,
+      //被激活的链接地址
+      activePath: ''
     }
   },
   //定义内置的生命周期函数  页面加载完执行此
   created() {
     //获取菜单数据 赋值给上面的自定义菜单列表对象
     this.getMenuList();
+    //给激活组件状态赋值
+    this.activePath=window.sessionStorage.getItem('activePath')
   },
   methods: {
     logout() {
@@ -109,6 +116,11 @@ export default {
     //点击按钮展开左侧菜单 切换菜单的折叠与展开
     toggleCollapse(){
       this.isCollapse=!this.isCollapse;
+    },
+    //保存链接的激活状态
+    saveNavState(activePath){
+      window.sessionStorage.setItem('activePath',activePath)
+      this.activePath=activePath
     }
   }
 }
