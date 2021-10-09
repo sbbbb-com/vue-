@@ -6,6 +6,7 @@ const login = () => import('@/components/Login')
 const Test = () => import('@/components/Test')
 const Home = () => import('@/components/Home')
 const Welcome = () => import('@/components/Welcome')
+const Users= () =>import('@/components/user/Users')
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,8 @@ const router = new VueRouter({
         redirect: '/welcome',
         //定义home的子页面路由
         children: [
-            {path: '/Welcome',component:Welcome}
+            {path: '/Welcome',component:Welcome},
+            {path: '/users',component:Users}
         ]
     }
   ]
