@@ -23,3 +23,8 @@ html,body,#app{
   /*设置字体*/
   font-size: 12px ;
 }
+
+/*设置分页和表格间的间隙 增大*/
+.el-pagination{
+  margin-top: 15px;
+}

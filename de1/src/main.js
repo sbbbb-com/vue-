@@ -11,7 +11,7 @@ import '@/assets/fonts/iconfont'
 //导入 axios
 import axios from "axios";
 //设置请求的根路径
-axios.defaults.baseURL="http://127.0.0.1:8888/api/private/v1/"
+axios.defaults.baseURL="http://121.41.113.96:8888/api/private/v1/"
 
 //设置请求的拦截器  保证拥有获取数据的权限
 axios.interceptors.request.use(config=>{  //config请求对象
