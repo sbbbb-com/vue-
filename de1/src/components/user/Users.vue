@@ -113,6 +113,26 @@
 export default {
   name: "Users",
   data(){
+    // 自定义邮箱规则
+    const checkEmail = (rule, value, callback) => {
+      console.log(rule);
+      const regEmail = /^\w+@\w+(\.\w+)+$/
+      if (regEmail.test(value)) {
+        // 合法邮箱
+        return callback()
+      }
+      callback(new Error('请输入合法邮箱'))
+    }
+    // 自定义手机号规则
+    const checkMobile = (rule, value, callback) => {
+      const regMobile = /^1[34578]\d{9}$/
+      if (regMobile.test(value)) {
+        return callback()
+      }
+      // 返回一个错误提示
+      callback(new Error('请输入合法的手机号码'))
+    }
+
     return {
       //定义获取用户列表的请求的get参数
       queryInfo: {
@@ -145,10 +165,12 @@ export default {
           {min: 6,max: 15,message: '密码的长度在6-15之间',trigger: 'blur'}
         ],
         email: [
-          {require: true,message: '请输入邮箱',trigger:'blur'}
+          {require: true,message: '请输入邮箱',trigger:'blur'},
+          {validator: checkEmail,trigger: 'blur' }
         ],
         mobile: [
-          {require: true,message: '请输入手机号',trigger:'blur'}
+          {require: true,message: '请输入手机号',trigger:'blur'},
+          {validator: checkMobile,trigger: 'blur' }
         ]
       }
     }
