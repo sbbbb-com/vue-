@@ -13,8 +13,13 @@
     <!-- 搜索与添加区域 -->
     <el-row :gutter="20">
       <el-col :span="9">
-        <el-input placeholder="请输入内容" >
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容"
+                  v-model="queryInfo.query"
+                  clearable
+                  @clear="getUserList">
+          <el-button slot="append"
+                     @click="getUserList"
+                     icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
       <el-col :span="4" >
@@ -32,7 +37,7 @@
       <el-table-column label="状态" prop="mg_state">
         <template slot-scope="scope">
           <!-- 开关组件 -->
-          <el-switch v-model="scope.row.mg_state">
+          <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
@@ -75,6 +80,7 @@ export default {
     return {
       //定义获取用户列表的请求的get参数
       queryInfo: {
+        //搜索的关键字
         query: '',
         //当前的页数  默认 1
         pagenum: 1,
@@ -117,6 +123,18 @@ export default {
       //当分页设置等改变时 重新回调列表数据
       this.queryInfo.pagenum=newPage;
       this.getUserList();
+    },
+    //监听
+   async userStateChanged(userInfo){
+      console.log(userInfo);
+    const {data:res}=await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
+
+     if (res.meta.status!==200){
+       //更新失败 将按钮取反重置回去
+       userInfo.mg_state=!userInfo.mg_state
+       return this.$message.error('更新用户状态失败');
+     }
+     this.$message.success('更新用户状态成功！')
     }
   }
 }
