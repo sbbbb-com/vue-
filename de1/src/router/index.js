@@ -7,6 +7,7 @@ const Test = () => import('@/components/Test')
 const Home = () => import('@/components/Home')
 const Welcome = () => import('@/components/Welcome')
 const Users= () =>import('@/components/user/Users')
+const Rights = () => import('@/components/power/Rights')
 
 Vue.use(VueRouter)
 
@@ -24,7 +25,8 @@ const router = new VueRouter({
         //定义home的子页面路由
         children: [
             {path: '/Welcome',component:Welcome},
-            {path: '/users',component:Users}
+            {path: '/users',component:Users},
+            {path: '/rights',component:Rights} //权限
         ]
     }
   ]
