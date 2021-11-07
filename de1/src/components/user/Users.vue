@@ -74,6 +74,7 @@
   <el-dialog
     title="添加用户"
     :visible.sync="addDialogVisible"
+    @close="addDialogClosed"
     width="50%">
     <!-- 内容主题区 -->
     <el-form :model="addForm"
@@ -219,6 +220,10 @@ export default {
        return this.$message.error('更新用户状态失败');
      }
      this.$message.success('更新用户状态成功！')
+    },
+    //监听添加用户对话框的关闭事件
+    addDialogClosed(){
+      this.$refs.addFormRef.resetFields();
     }
   }
 }
