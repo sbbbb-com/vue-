@@ -3,7 +3,7 @@
   <!-- 面包屑导航区 -->
   <el-breadcrumb separator="/">
     <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-    <el-breadcrumb-item><a href="/">权限管理</a></el-breadcrumb-item>
+    <el-breadcrumb-item>权限管理</el-breadcrumb-item>
     <el-breadcrumb-item>权限列表</el-breadcrumb-item>
   </el-breadcrumb>
 
@@ -16,7 +16,29 @@
 
 <script>
 export default {
-  name: "Rights"
+  name: "Rights",
+  data(){
+    return {
+      //权限列表数据
+      rightsList: []
+    }
+  },
+  created() {
+    //获取到所有的权限数据
+    this.getRightsList();
+  },
+  methods: {
+    //获取权限列表的方法
+    async getRightsList(){
+      const {data:res}=await this.$http.get('rights/list')
+      if (res.meta.status!==200){
+        return this.$message.error('获取权限列表失败！')
+      }
+      this.rightsList=res.data
+
+      console.log(this.rightsList)
+    }
+  }
 }
 </script>
 
