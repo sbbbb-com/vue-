@@ -43,9 +43,9 @@
       </el-table-column>
       <el-table-column label="操作" width="180">
         <!-- 同样使用作用域插槽 -->
-        <template slot-scope="">
+        <template slot-scope="scope">
           <!-- 修改按钮 -->
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog()"></el-button>
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
           <!-- 删除按钮 -->
           <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
           <!-- 分配角色按钮 -->
@@ -111,11 +111,26 @@
   <el-dialog
     title="修改用户的对话框"
     :visible.sync="editDialogVisible"
+    @close="editDialogClosed"
     width="50%">
-    <span>这是一段信息</span>
+    <el-form :model="editForm"
+             :rules="editFormRules"
+             ref="editFormRef"
+             label-width="70px">
+      <el-form-item label="用户名" >
+        <el-input v-model="editForm.username" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="editForm.email" ></el-input>
+      </el-form-item>
+      <el-form-item label="手机号"  prop="mobile">
+        <el-input v-model="editForm.mobile" ></el-input>
+      </el-form-item>
+    </el-form>
+
     <span slot="footer" class="dialog-footer">
     <el-button @click="editDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="editUserInfo">确 定</el-button>
   </span>
   </el-dialog>
 
@@ -187,7 +202,20 @@ export default {
           {require: true,message: '请输入手机号',trigger:'blur'},
           {validator: checkMobile,trigger: 'blur' }
         ]
-      }
+      },
+      //修改表单的验证规则对象
+      editFormRules: {
+        email: [
+          {require: true,message: '请输入邮箱',trigger:'blur'},
+          {validator: checkEmail,trigger: 'blur' }
+        ],
+        mobile: [
+          {require: true,message: '请输入手机号',trigger:'blur'},
+          {validator: checkMobile,trigger: 'blur' }
+        ]
+      },
+      //查询到的用户信息对象
+      editForm: {}
     }
   },
   created() {
@@ -259,8 +287,33 @@ export default {
       })
     },
     //展示编辑用户的对话框 修改对话框按钮
-    showEditDialog(){
+    async showEditDialog(id){
+
+      const {data:res} =await this.$http.get('users/'+id);
+      console.log(res.data)
+
+      //校验信息查询是否成功
+      if (res.meta.status!==200){
+        return this.$message.error("查询用户信息失败")
+      }
+
+      //给查询到的单个用户信息对象赋值
+      this.editForm=res.data;
+
       this.editDialogVisible=true;
+      //console.log(id);
+    },
+    //监听修改用户的对话框的关闭事件
+    editDialogClosed(){
+      this.$refs.editFormRef.resetFields();
+    },
+    //修改用户信息并且提交
+    editUserInfo(){
+      this.$refs.editFormRef.validate(valid=>{
+        if (!valid)return;
+        //发起修改用户的数据请求
+
+      })
     }
   }
 }
