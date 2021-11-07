@@ -103,7 +103,7 @@
     <!-- 底部区域 -->
     <span slot="footer" class="dialog-footer">
     <el-button @click="addDialogVisible=false">取 消</el-button>
-    <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="addUser">确 定</el-button>
   </span>
   </el-dialog>
 
@@ -224,6 +224,16 @@ export default {
     //监听添加用户对话框的关闭事件
     addDialogClosed(){
       this.$refs.addFormRef.resetFields();
+    },
+    //提交表单前的校验工作 添加用户
+    addUser(){
+      //拿到整个表单的引用对象
+      this.$refs.addFormRef.validate(valid=>{
+        //如果校验失败 直接终止
+        if (!valid)return ;
+        //否则可以发起 添加用户的网络请求
+
+      })
     }
   }
 }
