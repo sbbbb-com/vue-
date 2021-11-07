@@ -45,7 +45,7 @@
         <!-- 同样使用作用域插槽 -->
         <template slot-scope="">
           <!-- 修改按钮 -->
-          <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog()"></el-button>
           <!-- 删除按钮 -->
           <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
           <!-- 分配角色按钮 -->
@@ -107,6 +107,18 @@
   </span>
   </el-dialog>
 
+  <!-- 修改用户 对话框 -->
+  <el-dialog
+    title="修改用户的对话框"
+    :visible.sync="editDialogVisible"
+    width="50%">
+    <span>这是一段信息</span>
+    <span slot="footer" class="dialog-footer">
+    <el-button @click="editDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+  </span>
+  </el-dialog>
+
 </div>
 </template>
 
@@ -116,7 +128,7 @@ export default {
   data(){
     // 自定义邮箱规则
     const checkEmail = (rule, value, callback) => {
-      console.log(rule);
+      //console.log(rule);
       const regEmail = /^\w+@\w+(\.\w+)+$/
       if (regEmail.test(value)) {
         // 合法邮箱
@@ -148,6 +160,8 @@ export default {
       total : 0,
       //控制添加用户对话框的显示与隐藏
       addDialogVisible: false,
+      //控制修改用户对话框的显示与隐藏
+      editDialogVisible: false,
       //添加用户的表单数据
       addForm:{
         username: '',
@@ -192,8 +206,8 @@ export default {
       //获取到具体值保存到data中数组
       this.userList=res.data.users;
       this.total=res.data.total;
-      console.log(this.userList);
-      console.log(this.total);
+      //console.log(this.userList);
+      //console.log(this.total);
     },
     //监听 pageSize分页的事件处理函数
     handleSizeChange(newSize){
@@ -204,14 +218,14 @@ export default {
     },
     //定义 页码值的改变的函数
     handleCurrentChange(newPage){
-      console.log(newPage)
+      //console.log(newPage)
       //当分页设置等改变时 重新回调列表数据
       this.queryInfo.pagenum=newPage;
       this.getUserList();
     },
     //监听
    async userStateChanged(userInfo){
-      console.log(userInfo);
+      //console.log(userInfo);
     const {data:res}=await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
 
      if (res.meta.status!==200){
@@ -228,12 +242,25 @@ export default {
     //提交表单前的校验工作 添加用户
     addUser(){
       //拿到整个表单的引用对象
-      this.$refs.addFormRef.validate(valid=>{
+      this.$refs.addFormRef.validate(async  valid=>{
         //如果校验失败 直接终止
         if (!valid)return ;
         //否则可以发起 添加用户的网络请求
+        const {data:res}= await this.$http.post('users',this.addForm);
 
+        if (res.meta.status!== 201){
+          this.$message.error("添加用户失败")
+        }
+        this.$message.success("添加用户成功");
+        //隐藏添加用户对话框
+        this.addDialogVisible=false;
+        //刷新用户的操作列表  重新获取用户列表
+         this.getUserList();
       })
+    },
+    //展示编辑用户的对话框 修改对话框按钮
+    showEditDialog(){
+      this.editDialogVisible=true;
     }
   }
 }
