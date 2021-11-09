@@ -33,9 +33,22 @@
                 <el-tag>{{item1.authName}}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
+
               <!-- 渲染二级三级权限 -->
               <el-col span="19">
-                {{i1}}
+                <!-- 通过for嵌套 渲染所有的二级权限 -->
+                <el-row
+                  :class="[i2!==0?'bdtop':'']"
+                  v-for="(item2,i2) in item1.children"
+                  :key="item2.id">
+                  <el-col>
+                    <el-tag type="success">{{item2.authName}}</el-tag>
+                    <i class="el-icon-caret-right"></i>
+                  </el-col>
+                  <el-col>
+
+                  </el-col>
+                </el-row>
               </el-col>
             </el-row>
           </template>
