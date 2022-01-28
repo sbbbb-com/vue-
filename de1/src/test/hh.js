@@ -13,25 +13,24 @@ let  mess=""
 
 function http(url) {
 
-    let endings=0;
-
-    var httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
+    const httpRequest = new XMLHttpRequest();//第一步：建立所需的对象
     httpRequest.open('GET', "http://121.41.113.96:11239/"+url, true);//第二步：打开连接  将请求参数写在url中  ps:"./Ptest.php?name=test&nameone=testone"
     httpRequest.send();//第三步：发送请求  将请求参数写在URL中
     /**
      * 获取数据后的处理程序
      */
     httpRequest.onreadystatechange = function () {
-        if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        if (httpRequest.readyState === 4 && httpRequest.status === 200) {
             const json = httpRequest.responseText;//获取到json字符串，还需解析
 
             //console.log(json)
-            let end= json.substr(-4,1)
-
+            json.substr(-4,1);
             let scan= json.substr(-12,12)
             console.log("正确答案是"+scan)
 
             mess=scan
+
+            if (mess.length<1)return "AAAAAAAAAAAAAAAAAAAAAAA"
             return scan;
 
             //根据abcd 返回对应 下标 0-3
@@ -51,17 +50,17 @@ function http(url) {
  */
 
 function strs(sss) {
+
     let indexOf1 = sss.indexOf('，');
     let indexOf2 = sss.indexOf('_');
     let indexOf3 = sss.indexOf('。');
+
 
     if (indexOf2>indexOf1)indexOf1=indexOf2
     if (indexOf3>indexOf1)indexOf1=indexOf3
 
     //默认是取最大值
-    const  text=sss.substr(1,indexOf1)
-
-    return text;
+    return sss.substr(1, indexOf1);
 
 
 }

@@ -25,7 +25,7 @@
           <template slot-scope="scope">
             <!-- 页面布局 -->
             <el-row
-              :class="['bdbottom',i1===0?'bdtop':'']"
+              :class="['bdbottom',i1===0?'bdtop':'','vcenter']"
               v-for="(item1,i1) in scope.row.children"
               :key="item1.id">
               <!-- 渲染一级权限 -->
@@ -38,19 +38,27 @@
               <el-col span="19">
                 <!-- 通过for嵌套 渲染所有的二级权限 -->
                 <el-row
-                  :class="[i2!==0?'bdtop':'']"
+                  :class="[i2!==0?'bdtop':'','vcenter']"
                   v-for="(item2,i2) in item1.children"
                   :key="item2.id">
-                  <el-col>
+                  <el-col span="6">
                     <el-tag type="success">{{item2.authName}}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
-                  <el-col>
 
+                  <el-col :span="18">
+                    <el-tag
+                      type="warning"
+                      :class="[i3!==0?'bdtop':'']"
+                      v-for="(item3,i3) in item2.children"
+                      :key="item3.id">
+                      {{item3.authName}}
+                    </el-tag>
                   </el-col>
                 </el-row>
               </el-col>
             </el-row>
+
           </template>
         </el-table-column>
         <!-- 索引列 -->
@@ -110,6 +118,11 @@ export default {
 
 .bdbottom{
   border-bottom: 1px solid #eee;
+}
+
+.vcenter{
+  display: flex;
+  align-items: center;
 }
 
 </style>
