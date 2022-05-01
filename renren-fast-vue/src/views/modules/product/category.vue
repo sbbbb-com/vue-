@@ -1,6 +1,10 @@
 <template>
   <div>
     <el-tree
+      :draggable="true"
+      :allow-drop="allowDrop"
+      @node-drop="handleDrop"
+      :default-expanded-keys="expandedKey"
       :data="memus"
       :props="defaultProps"
       show-checkbox
@@ -23,48 +27,189 @@
             @click="() => remove(node, data)">
             删除
           </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            @click="() => edit(data)">
+            修改
+          </el-button>
         </span>
       </span>
     </el-tree>
+
+    <!--对话框-->
+    <el-dialog
+      :close-on-click-modal="false"
+      :title="title"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <el-form :model="category">
+        <el-form-item label="分类名称">
+          <el-input v-model="category.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="图标">
+          <el-input v-model="category.icon" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="计量单位">
+          <el-input v-model="category.productUnit" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="submitData">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'category',
   data () {
     return {
+      // 统计最大层级 默认是1
+      maxLevel: 0,
+      title: '',
+      dialogType: '', //edit add
       memus: [],
       defaultProps: {
         // 标识 从数据里面取到的 子节点属性
         children: 'children',
         // 表示从数据里面取的为显示的数据
-        label: 'name'
+        label: 'name',
+      },
+      //默认展示的节点
+      expandedKey: [],
+      // 对话框 默认关闭
+      dialogVisible: false,
+      // 弹出对话框中表格的数据
+      formLabelWidth: '120px',
+      //表单 数据绑定
+      category: {
+        name: '',
+        parentCid: 0,
+        catLevel: 0,
+        showStatus: 1,
+        sort: 0,
+        catId: null,
+        productUnit: null,
+        icon: null,
       }
     }
   },
   created () {
     // 在页面创建完成后 加载数据
-    this.getMenuData();
+    this.getMenuData()
   },
   methods: {
     //获取菜单数据
-    getMenuData(){
+    getMenuData () {
       this.$http({
-        url: this.$http.adornUrl("/product/category/list/tree"),
+        url: this.$http.adornUrl('/product/category/list/tree'),
         methods: 'get'
-      }).then(({data})=>{
-        console.log("成功获取到的数据",data.data)
+      }).then(({data}) => {
+        //console.log('成功获取到的数据', data.data)
         // 设置菜单数据
-        this.memus=data.data
+        this.memus = data.data
       })
     },
     // 节点添加
-    append(data) {
-      console.log("点击添加按钮",data)
+    append (data) {
+      //console.log('点击添加按钮', data)
+      // 打开对话框
+      this.dialogType = 'add'
+      this.title = '添加分类数据'
+      this.dialogVisible = true
+      this.category.parentCid = data.catId
+      this.category.catLevel = data.catLevel * 1 + 1
+      // 先让表单 设置 默认值
+      this.category.name = ''
+      this.category.catId = null
+      this.category.icon = ''
+      this.category.sort = 0
+      this.category.showStatus = 1
+      this.category.productUnit = ''
+
+    },
+    edit (data) {
+      //console.log("修改",data);
+      this.dialogType = 'edit'
+      this.title = '修改分类数据'
+      this.dialogVisible = true
+
+      //发送请求 获取当前节点的最新数据
+      this.$http({
+        url: this.$http.adornUrl(`/product/category/info/${data.catId}`),
+        method: 'get',
+      }).then(({data}) => {
+        //请求成功 回显数据
+        console.log('返回数值：',)
+        this.category.name = data.data.name
+        this.category.catId = data.data.catId
+        this.category.icon = data.data.icon
+        this.category.productUnit = data.data.productUnit
+        //回显父菜单
+        this.category.parentCid = data.data.parentCid
+      })
+
+    },
+    // 提交数据 判断 是提交还是修改
+    submitData () {
+      if (this.dialogType === 'add') {
+        this.addCategory()
+      }
+
+      if (this.dialogType === 'edit') {
+        this.editCategory()
+      }
+    },
+    //修改三级分类菜单的方法
+    editCategory () {
+      //定义发送的临时变量
+      let {catId, name, icon, productUnit} = this.category
+
+      this.$http({
+        url: this.$http.adornUrl('/product/category/update'),
+        method: 'post',
+        data: this.$http.adornData({catId, name, icon, productUnit}, false)
+      }).then(({data}) => {
+        this.$message({
+          message: '菜单修改成功',
+          type: 'success'
+        })
+        //后续操作
+        //关闭对话框
+        this.dialogVisible = false
+        //重新请求数据
+        this.getMenuData()
+        //打开节点 保存数据的三级菜单父菜单的分类
+        this.expandedKey = [this.category.parentCid]
+      })
+    },
+    //添加三级分类
+    addCategory () {
+      console.log('提交的数据', this.category)
+      //发起请求
+      this.$http({
+        url: this.$http.adornUrl('/product/category/save'),
+        method: 'post',
+        data: this.$http.adornData(this.category, false)
+      }).then(({data}) => {
+        this.$message({
+          message: '菜单保存成功',
+          type: 'success'
+        })
+        //关闭对话框
+        this.dialogVisible = false
+        //重新请求数据
+        this.getMenuData()
+        //打开节点 保存数据的三级菜单父菜单的分类
+        this.expandedKey = [this.category.parentCid]
+      })
     },
     // 节点删除
-    remove(node, data) {
+    remove (node, data) {
       //在正式删除前进行弹窗提示：
       this.$confirm(`是否删除【${data.name}】菜单？`, '警告！！', {
         confirmButtonText: '确定',
@@ -72,25 +217,97 @@ export default {
         type: 'warning'
       }).then(() => {
 
-        let ids=[data.catId]
+        let ids = [data.catId]
         //console.log("点击删除按钮",node,data)
         this.$http({
-          url: this.$http.adornUrl("/product/category/delete"),
-          method: "POST",
-          data: this.$http.adornData(ids,false)
-        }).then(({data})=>{
+          url: this.$http.adornUrl('/product/category/delete'),
+          method: 'POST',
+          data: this.$http.adornData(ids, false)
+        }).then(({data}) => {
           //console.log("删除成功...",data)
+          //删除成功后提示消息
+          this.$message({
+            type: 'success',
+            message: '菜单删除成功!'
+          })
           //删除后刷新数据
-          this.getMenuData();
+          this.getMenuData()
+          // 设置需要默认展开的菜单
+          this.expandedKey = [node.parent.data.catId]
         })
 
-        //删除成功后提示消息
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
-      }).catch((er)=>{
-        })
+      }).catch((er) => {
+      })
+    },
+    // 节点拖拽
+    /**
+     *
+     * @param draggingNode 当前节点
+     * @param dropNode 这是放到那个节点的
+     * @param type 这是他放到了那个位置
+     * @returns {boolean}
+     */
+    allowDrop (draggingNode, dropNode, type) {
+      // 1.被拖动的当前节点以及所在的父节点总层数不能大于3
+      // 1）被拖动的当前节点总层数
+      let level = this.countNodeLevel(draggingNode.data)
+      // 当前正在拖动的节点加上父节点所在深度不大于3即可
+      // console.log("节点深度大小为：",level)
+      //  深度 = (最深深度 - 当前深度) + 1
+      let deep=(this.maxLevel-draggingNode.data.catLevel)+1
+      //console.log("节点深度大小为：",deep)
+      // 对能不能拖进行判断
+      if (type==="inner"){
+        return  deep+dropNode.level<=3
+      }else {
+        return  (deep+dropNode.parent.level<=3)
+      }
+
+    },
+    /**
+     * 计算节点数目
+     * @param node
+     * @returns {undefined}
+     */
+    countNodeLevel (node) {
+      // 遍历所有子节点 求出深度最大值
+      if (node.children!=null && node.children.length>0){
+        for (let i = 0; i < node.children.length; i++) {
+          // 遍历子节点值
+          if (node.children[i].catLevel>this.maxLevel){
+            this.maxLevel=node.children[i].catLevel
+          }
+
+          //对子节点的子节点进行递归遍历
+          this.countNodeLevel((node.children[i]))
+        }
+      }
+      return this.maxLevel
+    },
+
+    /**
+     * 	拖拽成功完成时触发的事件
+     * @param draggingNode  被拖拽节点对应的 Node
+     * @param dropNode 结束拖拽时最后进入的节点
+     * @param dropType 被拖拽节点的放置位置（before、after、inner）
+     * @param ev event
+     */
+    handleDrop(draggingNode, dropNode, dropType, ev) {
+      console.log('handleDrop： ',draggingNode,dropNode,dropType);
+      // 1.知道当前节点的最新父节点id
+      let pCid=0;
+      let siblings=[]
+      if (dropType==="before" || dropType=== "after"){
+        pCid=dropNode.parent.data.catId;
+      }else {
+        pCid=dropNode.data.catId;
+      }
+
+      //2. 当前拖拽节点的最新顺序
+      if (dropType==="inner"){
+
+      }
+
     },
   }
 }

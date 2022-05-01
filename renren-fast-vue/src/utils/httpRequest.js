@@ -52,6 +52,7 @@ http.adornUrl = (actionName) => {
  */
 http.adornParams = (params = {}, openDefultParams = true) => {
   var defaults = {
+    // 加上时间戳，就不会缓存请求结果
     't': new Date().getTime()
   }
   return openDefultParams ? merge(defaults, params) : params
