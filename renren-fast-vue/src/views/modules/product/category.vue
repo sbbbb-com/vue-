@@ -68,6 +68,8 @@ export default {
   name: 'category',
   data () {
     return {
+      // 需要更新的节点对象
+      updateNodes:[],
       // 统计最大层级 默认是1
       maxLevel: 0,
       title: '',
@@ -284,7 +286,20 @@ export default {
       }
       return this.maxLevel
     },
-
+    /**
+     * 更新所有子节点的层级
+     * @param node
+     */
+    updateChildrenNodeLevel(node){
+      if (node.childNodes.length> 0){
+        for (let i = 0; i < node.childNodes.length; i++) {
+          let  cNode=node.childNodes[i].data;
+          this.updateNodes.push({catId: cNode.catId,catLevel: node.childNodes[i].level})
+          // 递归将处理的节点递归传入进去
+          this.updateChildrenNodeLevel(node.childNodes[i])
+        }
+      }
+    },
     /**
      * 	拖拽成功完成时触发的事件
      * @param draggingNode  被拖拽节点对应的 Node
@@ -298,16 +313,31 @@ export default {
       let pCid=0;
       let siblings=[]
       if (dropType==="before" || dropType=== "after"){
-        pCid=dropNode.parent.data.catId;
+        pCid=dropNode.parent.data.catId === undefined ? 0 :dropNode.parent.data.catId ;
+        siblings=dropNode.parent.childNodes;
       }else {
         pCid=dropNode.data.catId;
+        siblings=dropNode.childNodes;
       }
 
       //2. 当前拖拽节点的最新顺序
-      if (dropType==="inner"){
-
+      for (let i = 0; i < siblings.length; i++) {
+        if (siblings[i].data.catId===draggingNode.data.catId){
+          //如果遍历的是当前正在拖拽的节点
+          let catLevel=draggingNode.level; //当前节点的默认层级
+          if (siblings[i].level !==draggingNode.level){
+            // 当前的层级发生改变
+            catLevel=siblings[i].level;
+            // 修改子节点的层级
+            this.updateChildrenNodeLevel(siblings[i]);
+          }
+          this.updateNodes.push({catId:siblings[i].data.catId, sort: i, parentCid: pCid,catLevel:catLevel})
+        }else {
+          this.updateNodes.push({catId:siblings[i].data.catId, sort: i});
+        }
       }
-
+      // 当前拖拽节点的最新层级
+      console.log("updateNodes",this.updateNodes)
     },
   }
 }
