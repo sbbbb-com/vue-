@@ -18,6 +18,8 @@
     </el-form-item>
     <el-form-item label="显示状态" prop="showStatus">
       <el-switch
+        :active-value="1"
+        :inactive-value="0"
         v-model="dataForm.showStatus"
         active-color="#13ce66"
         inactive-color="#ff4949">
@@ -28,7 +30,7 @@
       <el-input v-model="dataForm.firstLetter" placeholder="检索首字母"></el-input>
     </el-form-item>
     <el-form-item label="排序" prop="sort">
-      <el-input v-model="dataForm.sort" placeholder="排序"></el-input>
+      <el-input v-model.number="dataForm.sort" placeholder="排序"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -52,9 +54,9 @@ import SingleUpload from '@/components/upload/singleUpload'
           name: '',
           logo: '',
           descript: '',
-          showStatus: '',
+          showStatus: '1',
           firstLetter: '',
-          sort: ''
+          sort: '0'
         },
         dataRule: {
           name: [
@@ -70,10 +72,30 @@ import SingleUpload from '@/components/upload/singleUpload'
             { required: true, message: '显示状态[0-不显示；1-显示]不能为空', trigger: 'blur' }
           ],
           firstLetter: [
-            { required: true, message: '检索首字母不能为空', trigger: 'blur' }
+            { validator:(rule,value,callback)=>{
+              if (value===''){
+              callback(new Error('首字母必须填写'));
+              }
+              else if (!/^[a-zA-Z]$/.test(value)){
+                //正则表达式 判断是否是字母
+                callback(new Error('首字母只能是单个字母'));
+              }else {
+                callback()
+              }
+              }, trigger: 'blur' }
           ],
           sort: [
-            { required: true, message: '排序不能为空', trigger: 'blur' }
+            { validator: (rule,value,callback)=>{
+                if (value===''){
+                  callback(new Error('排序字段必须填写'));
+                }
+                else if (!Number.isInteger(value) || value<0){
+                  //正则表达式 判断是否是字母
+                  callback(new Error('必须是一个大于零的整数'));
+                }else {
+                  callback()
+                }
+              }, trigger: 'blur' }
           ]
         }
       }
@@ -119,6 +141,7 @@ import SingleUpload from '@/components/upload/singleUpload'
                 'sort': this.dataForm.sort
               })
             }).then(({data}) => {
+              console.log("修改返回信息",data)
               if (data && data.code === 0) {
                 this.$message({
                   message: '操作成功',

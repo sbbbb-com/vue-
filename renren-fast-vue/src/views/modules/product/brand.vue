@@ -1,6 +1,8 @@
 <template>
   <div class="mod-config">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+    <el-form :inline="true"
+             :model="dataForm"
+             @keyup.enter.native="getDataList()">
       <el-form-item>
         <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
@@ -40,7 +42,14 @@
         prop="logo"
         header-align="center"
         align="center"
-        label="品牌logo地址">
+        label="品牌logo">
+        <template slot-scope="scope">
+<!--          <el-image-->
+<!--            style="width: 100px; height: 100px"-->
+<!--            :src="scope.row.logo"-->
+<!--            fit="scale-down"></el-image>-->
+          <img :src="scope.row.logo" style="width: 100px; height: 100px">
+        </template>
       </el-table-column>
       <el-table-column
         prop="descript"
@@ -138,15 +147,21 @@ export default {
       let  {brandId,showStatus}=data;
       // 发送请求 修改请求
       this.$http({
-        url: this.$http.adornUrl("/product/brand/update"),
+        url: this.$http.adornUrl("/product/brand/update/status"),
         method: "post",
         data: this.$http.adornData({brandId,showStatus: showStatus},false)
       }).then(({data})=>{
         //console.log("修改",data)
-        this.$message({
-          type: "success",
-          message: `状态更新成功，当前状态【${showStatus}】`
-        })
+
+        console.log("修改返回信息",data)
+        if (data && data.code === 0) {
+          this.$message({
+            message: `状态更新成功，当前状态【${showStatus}】`,
+            type: 'success',
+          })
+        } else {
+          this.$message.error(data.msg)
+        }
       })
     },
     // 获取数据列表
