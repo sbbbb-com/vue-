@@ -14,8 +14,8 @@
             </el-form-item>
             <el-form-item>
               <el-button @click="getDataList()">查询</el-button>
-              <el-button v-if="isAuth('ware:attrgroup:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-              <el-button v-if="isAuth('ware:attrgroup:delete')" type="danger" @click="deleteHandle()"
+              <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
+              <el-button  type="danger" @click="deleteHandle()"
                          :disabled="dataListSelections.length <= 0">批量删除
               </el-button>
             </el-form-item>
@@ -104,9 +104,11 @@ import AddOrUpdate from './attrgroup-add-or-update'
 
 export default {
   name: 'attrgroup',
-  components: {Category},
+  components: {Category,AddOrUpdate},
   data () {
     return {
+      //分类属性id
+      catId: 0,
       dataForm: {
         key: ''
       },
@@ -131,14 +133,22 @@ export default {
     //接受子组件事件改变变化
     treeNodeClick(data,node,component){
       //处理子组件触发的事件
-      console.log("处理子组件触发的事件",data,node,component)
-      console.log("点击菜单的id：：",data.catId)
+      //console.log("处理子组件触发的事件",data,node,component)
+      //console.log("点击菜单的id：：",data.catId)
+
+      if (node.level===3){
+        // 判断是否是三级分类
+        this.catId=data.catId;
+        console.log("发起请求",this.catId)
+        this.getDataList()
+      }
+
     },
     // 获取数据列表
     getDataList () {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl('/product/attrgroup/list'),
+        url: this.$http.adornUrl(`/product/attrgroup/list/${this.catId}`),
         method: 'get',
         params: this.$http.adornParams({
           'page': this.pageIndex,

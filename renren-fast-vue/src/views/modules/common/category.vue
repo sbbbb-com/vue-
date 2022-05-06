@@ -47,7 +47,7 @@ export default {
     },
     // 节点的点击事件
     nodeClick(data,node,component){
-      console.log("子组件节点被点击：",data,node,component)
+      //console.log("子组件节点被点击：",data,node,component)
       //向父组件发送信息
       this.$emit('tree-node-click',/*后面可以携带任意多的参数*/data,node,component)
     }
