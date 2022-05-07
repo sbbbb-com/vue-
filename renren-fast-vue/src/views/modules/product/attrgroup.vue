@@ -202,7 +202,7 @@ export default {
           url: this.$http.adornUrl('/product/attrgroup/delete'),
           method: 'post',
           data: this.$http.adornData(ids, false)
-        }).then(({data}) => {
+        }).then(({data}) =>  {
           if (data && data.code === 0) {
             this.$message({
               message: '操作成功',

@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    @close="dialogClose"
     :title="!dataForm.attrGroupId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
@@ -17,7 +18,15 @@
       <el-input v-model="dataForm.icon" placeholder="组图标"></el-input>
     </el-form-item>
     <el-form-item label="所属分类id" prop="catelogId">
-      <el-input v-model="dataForm.catelogId" placeholder="所属分类id"></el-input>
+<!--      <el-input v-model="dataForm.catelogId" placeholder="所属分类id"></el-input>-->
+      <el-cascader
+        placeholder="尝试搜索： 软件"
+        filterable
+        :props="props"
+        :options="categorys"
+        v-model="dataForm.catelogPath"
+       >
+      </el-cascader>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -31,6 +40,12 @@
   export default {
     data () {
       return {
+        props: {
+          value: "catId",
+          label: "name",
+          children: "children"
+        },
+        categorys: [],
         visible: false,
         dataForm: {
           attrGroupId: 0,
@@ -38,8 +53,9 @@
           sort: '',
           descript: '',
           icon: '',
-          catelogId: ''
-        },
+          catelogPath: [],
+          catelogId:  0
+         },
         dataRule: {
           attrGroupName: [
             { required: true, message: '组名不能为空', trigger: 'blur' }
@@ -59,7 +75,24 @@
         }
       }
     },
+    created () {
+      this.getCategorys();
+    },
     methods: {
+      dialogClose(){
+        //每一次打开时清空
+        this.dataForm.catelogPath=[]
+      },
+      getCategorys(){
+        this.$http({
+          url: this.$http.adornUrl('/product/category/list/tree'),
+          methods: 'get'
+        }).then(({data}) => {
+          //console.log('成功获取到的数据', data.data)
+          // 设置菜单数据
+          this.categorys = data.data
+        })
+      },
       init (id) {
         this.dataForm.attrGroupId = id || 0
         this.visible = true
@@ -77,6 +110,8 @@
                 this.dataForm.descript = data.attrGroup.descript
                 this.dataForm.icon = data.attrGroup.icon
                 this.dataForm.catelogId = data.attrGroup.catelogId
+                // 查出catelogId的完整路径
+                this.dataForm.catelogPath=data.attrGroup.catelogPath;
               }
             })
           }
@@ -95,7 +130,7 @@
                 'sort': this.dataForm.sort,
                 'descript': this.dataForm.descript,
                 'icon': this.dataForm.icon,
-                'catelogId': this.dataForm.catelogId
+                'catelogId': this.dataForm.catelogPath[this.dataForm.catelogPath.length-1]
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
