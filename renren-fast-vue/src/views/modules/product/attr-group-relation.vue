@@ -214,6 +214,7 @@ export default {
         })
       }).then(({ data }) => {
         if (data && data.code === 0) {
+          //console.log("问题510",data)
           this.dataList = data.page.list;
           this.totalPage = data.page.totalCount;
         } else {
